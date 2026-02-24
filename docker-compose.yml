@@ -5,28 +5,50 @@ services:
     image: mongo:6
     container_name: mongodb
     restart: always
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - mean-network
 
   backend:
     image: chandhanm/mean-backend:latest
     container_name: backend
+    restart: always
     ports:
       - "8080:8080"
     depends_on:
       - mongodb
-    restart: always
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/dd_db
+    networks:
+      - mean-network
 
   frontend:
     image: chandhanm/mean-frontend:latest
     container_name: frontend
     restart: always
+    depends_on:
+      - backend
+    networks:
+      - mean-network
 
   nginx:
     image: nginx:alpine
     container_name: nginx
+    restart: always
     ports:
       - "80:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - frontend
-    restart: always
+      - backend
+    networks:
+      - mean-network
+
+volumes:
+  mongo-data:
+
+networks:
+  mean-network:
+    driver: bridge
