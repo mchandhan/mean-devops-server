@@ -34,7 +34,7 @@ The system is decoupled into four primary services orchestrated via **Docker Com
 ### 2. Infrastructure Setup (EC2)
 
 Connect to your instance and run:
-
+## Install Docker
 ```bash
 # Update and Install Docker
 sudo apt install ca-certificates curl gnupg lsb-release -y
