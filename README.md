@@ -95,70 +95,19 @@ The pipeline automatically triggers on every push to `main`, running tests, buil
 
 ```
 name: MEAN Stack CI/CD Pipeline
-
 on:
   push:
     branches:
       - main
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # -----------------------------
-      # Checkout Code
-      # -----------------------------
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      # -----------------------------
-      # Login to Docker Hub
-      # -----------------------------
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # -----------------------------
-      # Build Backend Image
-      # -----------------------------
-      - name: Build Backend Docker Image
-        run: |
-          docker build -t chandhanm/mean-backend:latest ./backend
-      # -----------------------------
-      # Push Backend Image
-      # -----------------------------
-      - name: Push Backend Docker Image
-        run: |
-          docker push chandhanm/mean-backend:latest
-      # -----------------------------
-      # Build Frontend Image
-      # -----------------------------
-      - name: Build Frontend Docker Image
-        run: |
-          docker build -t chandhanm/mean-frontend:latest ./frontend
-      # -----------------------------
-      # Push Frontend Image
-      # -----------------------------
-      - name: Push Frontend Docker Image
-        run: |
-          docker push chandhanm/mean-frontend:latest
-      # -----------------------------
-      # Deploy to EC2
-      # -----------------------------
-      - name: Deploy to EC2 Server
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd mean-devops-server
-            docker compose pull
-            docker compose down
-            docker compose up -d
+      - Checkout Repository
+      - Login to Docker Hub
+      - Build & Push Backend Image
+      - Build & Push Frontend Image
+      - Deploy to EC2 via SSH
 ```
 
 ###  Docker Hub Registry
