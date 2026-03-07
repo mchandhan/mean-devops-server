@@ -38,30 +38,39 @@ Connect to your instance and run:
 ```bash
 # Update and Install Docker
 sudo apt install ca-certificates curl gnupg lsb-release -y
+
 #Install prerequisites
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
 #Add Docker’s official GPG key
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
   https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 #Set up the Docker repository
 sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io -y
+
 #Verify Docker version
 docker --version
-
+```
+## Install Docker Compose
+```bash
 #Install Docker Compose (latest standalone binary)
 
 #Download the latest release
 DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d '"' -f4)
 sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
 #Apply executable permissions
 sudo chmod +x /usr/local/bin/docker-compose
+
 #Verify installation
 docker-compose --version
+
 #change user permision
 sudo usermod -aG docker $USER && newgrp docker
 
